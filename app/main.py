@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+from app.schemas import UserCreate
 
 app = FastAPI(title="Lab1 - Fastapi User Api")
 
+
+users: list[UserCreate] = []
 @app.get("/health")
 def health():
     return{"status": "ok"}
@@ -9,3 +12,9 @@ def health():
 @app.get("/hello")
 def hello():
     return{"status": "Good Morning World"}
+
+@app.post("api/users", status_code=status.HTTP_201_CREATED)
+def add_user(new_user: UserCreate):
+    users.append(new_user)
+    return new_user
+    
