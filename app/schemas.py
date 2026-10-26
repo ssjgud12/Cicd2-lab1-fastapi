@@ -7,6 +7,7 @@ StudentIdStr = Annotated[str, StringConstraints(pattern=r"^S\d{7}$")]
  
  
 class UserCreate(BaseModel): 
+    userid: int
     name: NameStr 
     email: EmailStr 
     age: int = Field(gt=18, lt=120) 
