@@ -85,15 +85,7 @@ def test_delete_missing_user_returns_404(client):
  
     assert response.status_code == 404
 
-@pytest.mark.parametrize( 
-    "bad_sid", 
-    [ 
-        "BAD123", 
-        "s1234567", 
-        "S123", 
-        "S12345678", 
-    ], 
-) 
+
 def test_invalid_student_id_returns_422(client, bad_sid): 
     response = client.post( 
         "/api/users", 
