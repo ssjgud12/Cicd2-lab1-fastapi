@@ -41,5 +41,5 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture 
 def client(): 
-    return TestClient(app):
+    return TestClient(app)
 
