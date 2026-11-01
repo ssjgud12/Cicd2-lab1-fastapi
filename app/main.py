@@ -1,3 +1,5 @@
+import httpx
+from app.product_client import get_product_fetcher
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -93,3 +95,16 @@ def test_invalid_student_id_returns_422(client, bad_sid):
     ) 
  
     assert response.status_code == 422
+
+@app.get("/api/products/{product_id}") 
+def get_remote_product( 
+    product_id: int, 
+    product_fetcher=Depends(get_product_fetcher), 
+): 
+    try: 
+        return product_fetcher(product_id) 
+    except httpx.HTTPStatusError as exc: 
+        if exc.response.status_code == 404: 
+            raise HTTPException(404, "Product not found") from exc 
+    except httpx.RequestError as exc: 
+        raise HTTPException(503, "Product service unavailable") from exc
